@@ -45,6 +45,7 @@ public class TestDb extends AndroidTestCase {
 
         //Verify we got row back
         assertTrue("Error: Failure to insert Steps Habit Values", habitRowId != -1);
+        Cursor test = dbHelper.getData(1467590400L);
 
         //Query the database and receive a Cursor Back
         Cursor habitCursor = db.query(

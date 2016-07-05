@@ -88,7 +88,7 @@ public class HabitDbHelper extends SQLiteOpenHelper {
                 null, //column to filter by row groups
                 null //sort order
         );
-        db.close();
+        Log.i(LOG_TAG, "cursor" + habitCursor.getColumnIndex(HabitEntry.COLUMN_SHORT_COM));
         return habitCursor;
     }
 
@@ -102,11 +102,14 @@ public class HabitDbHelper extends SQLiteOpenHelper {
     }
 
     //Update counter for particular date
-    public void updateData(Long date, int count) {
+    public void updateData(int recordId, int count) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String strSQL = "UPDATE" + HabitEntry.TABLE_NAME + "SET " + HabitEntry.COLUMN_COUNTER + " = " + count + "WHERE "
-                + HabitEntry.COLUMN_DATE + " = " + date;
-        db.execSQL(strSQL);
+        ContentValues updatedValues = new ContentValues();
+        updatedValues.put(HabitEntry._ID, recordId);
+        updatedValues.put(HabitEntry.COLUMN_COUNTER, count);
+        db.update(HabitEntry.TABLE_NAME, updatedValues, HabitEntry._ID + "= ?", new String[]{Long.toString(recordId)});
+        db.close();
+
     }
 
 }
